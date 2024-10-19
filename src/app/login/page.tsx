@@ -14,7 +14,7 @@ interface IFormInput {
   
 }
 
-export default function Register() {
+export default function Login() {
   const { register, handleSubmit } = useForm<IFormInput>();
   const onSubmit = (data: IFormInput) => {
     alert(JSON.stringify(data));
@@ -23,14 +23,14 @@ export default function Register() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h1 className={styles.title}>Please Register</h1>
+        <h1 className={styles.title}>Please Login</h1>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <div>
             <label htmlFor="firstName" className={styles.label}>
               First Name
             </label>
             <input
-              placeholder="first name"
+              placeholder="bill"
               {...register("firstName")}
               className={styles.input}
             />
@@ -41,7 +41,7 @@ export default function Register() {
               Last Name
             </label>
             <input
-              placeholder="last name"
+              placeholder="luo"
               {...register("lastName")}
               className={styles.input}
             />
@@ -51,36 +51,14 @@ export default function Register() {
               Email
             </label>
             <input
-              placeholder="example@example.com"
+              placeholder="bluebill1049@hotmail.com"
               type="email"
               {...register("email")}
               className={styles.input}
             />
           </div>
-          <div>
-            <label htmlFor="password" className={styles.label}>
-              Password
-            </label>
-            <input
-              placeholder="********"
-              type="password"
-              {...register("password")}
-              className={styles.input}
-            />
-          </div>
-          <div>
-            <label htmlFor="confirmPassword" className={styles.label}>
-               Confirm Password
-            </label>
-            <input
-              placeholder="********"
-              type="password"
-              {...register("confirmPassword")}
-              className={styles.input}
-            />
-          </div>
 
-          <button type="submit" className={styles.submitButton}> Register </button>
+          <button type="submit" className={styles.submitButton}> Login </button>
         </form>
       </main>
       <footer className={styles.footer}>

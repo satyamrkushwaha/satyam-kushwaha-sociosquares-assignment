@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import "./globals.css";
+
 
 
 export const metadata: Metadata = {
-  title: "Register",
-  description: "Register from here",
+  title: "Dashboard",
+  description: "dahsboard",
 };
 
 export default function RootLayout({
