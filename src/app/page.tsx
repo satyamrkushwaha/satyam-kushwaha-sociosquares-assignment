@@ -2,6 +2,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useGetPokemonByNameQuery } from "@/redux/api";
 
 
 
@@ -15,6 +16,9 @@ interface IFormInput {
 }
 
 export default function Register() {
+
+
+
   const { register, handleSubmit } = useForm<IFormInput>();
   const onSubmit = (data: IFormInput) => {
     alert(JSON.stringify(data));
