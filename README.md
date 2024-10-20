@@ -30,7 +30,7 @@ Before running the project, make sure you have:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/your-nextjs-app.git
+    git clone https://github.com/satyamrkushwaha/satyam-kushwaha-sociosquares-assignment.git or download zip file
     cd your-nextjs-app
     ```
 
