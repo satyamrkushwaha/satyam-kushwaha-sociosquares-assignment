@@ -85,17 +85,33 @@
     opacity: 0.4;
   }
   
-  
+
   .instruction{
     color: rgb(212, 212, 212);
     font-size: 12px;
     font-style: italic;
   }
   
-  
-  
   .error{
     color: red;
     font-size: 12px;
   }
+
+  .password-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .password-container input {
+    flex: 1;
+  }
+  
+  .password-container span {
+    position: absolute;
+    right: 0.5rem;
+    top: 15%;
+    cursor: pointer;
+  }
+  
   

@@ -1,11 +1,13 @@
 "use client";
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from "react-hook-form";
 import { useRegisterUserMutation } from "@/redux/userApi";
 import { useDispatch } from 'react-redux';
 import { addUser } from '@/redux/userSlice';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 interface FormData {
   name: string;
@@ -20,19 +22,23 @@ export default function Register() {
   const [registerUser] = useRegisterUserMutation();
   const router = useRouter();
   const dispatch = useDispatch();
-  
+
+  // State for password visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   // Watch the password field for validation purposes
   const password = watch('password');
 
   // Form submission handler
   const onSubmit = useCallback(async (data: FormData) => {
     const existingUsers = JSON.parse(sessionStorage.getItem('registeredUsers') || '[]');
-    
+
     // Check if the email or username already exists
     const userExists = existingUsers.some(
       (user: FormData) => user.email === data.email || user.username === data.username
     );
-    
+
     if (userExists) {
       setError("email", { type: "manual", message: "User with this email already exists" });
       setError("username", { type: "manual", message: "User with this username already exists" });
@@ -98,19 +104,24 @@ export default function Register() {
           </div>
           <div>
             <label htmlFor="password" className='label'>Password</label>
-            <input
-              placeholder="********"
-              type="password"
-              {...register("password", {
-                required: 'Password is required',
-                minLength: { value: 8, message: 'Password must be at least 8 characters' },
-                pattern: {
-                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                  message: 'Password must include uppercase, lowercase, number, and special character',
-                },
-              })}
-              className='input'
-            />
+            <div className="password-container">
+              <input
+                placeholder="********"
+                type={showPassword ? 'text' : 'password'}
+                {...register("password", {
+                  required: 'Password is required',
+                  minLength: { value: 8, message: 'Password must be at least 8 characters' },
+                  pattern: {
+                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                    message: 'Password must include uppercase, lowercase, number, and special character',
+                  },
+                })}
+                className='input'
+              />
+              <span onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              </span>
+            </div>
             <p className='error'>{errors.password?.message}</p>
             <p className='instruction'>
               (Password must include uppercase, lowercase, number, and special character)
@@ -118,15 +129,20 @@ export default function Register() {
           </div>
           <div>
             <label htmlFor="confirmPassword" className='label'>Confirm Password</label>
-            <input
-              placeholder="********"
-              type="password"
-              {...register("confirmPassword", {
-                required: 'Confirm Password is required',
-                validate: value => value === password || 'Passwords do not match',
-              })}
-              className='input'
-            />
+            <div className="password-container">
+              <input
+                placeholder="********"
+                type={showConfirmPassword ? 'text' : 'password'}
+                {...register("confirmPassword", {
+                  required: 'Confirm Password is required',
+                  validate: value => value === password || 'Passwords do not match',
+                })}
+                className='input'
+              />
+              <span onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              </span>
+            </div>
             <p className='error'>{errors.confirmPassword?.message}</p>
           </div>
           <div className='buttonContainer'>
