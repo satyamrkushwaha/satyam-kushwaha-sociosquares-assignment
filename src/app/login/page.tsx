@@ -1,9 +1,7 @@
 "use client";
-import Image from "next/image";
+
 import styles from "./page.module.css";
 import { useForm, SubmitHandler } from "react-hook-form";
-
-
 
 interface IFormInput {
   firstName: string;

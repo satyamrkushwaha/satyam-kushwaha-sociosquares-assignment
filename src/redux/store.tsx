@@ -1,14 +1,13 @@
-// store.js or store.ts
 import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import { pokemonApi } from './api'
+import { userApi } from './userApi';
 
 export const store = configureStore({
-  reducer: {
-    [pokemonApi.reducerPath]: pokemonApi.reducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(pokemonApi.middleware),
-});
-
-setupListeners(store.dispatch);
+    reducer: {
+      [userApi.reducerPath]: userApi.reducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(userApi.middleware),
+  });
+  
+  export type RootState = ReturnType<typeof store.getState>;
+  export type AppDispatch = typeof store.dispatch;

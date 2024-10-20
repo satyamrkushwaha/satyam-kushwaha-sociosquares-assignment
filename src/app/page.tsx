@@ -1,14 +1,17 @@
 "use client";
+
+import { useEffect, useLayoutEffect } from 'react';
 import Image from "next/image";
+import { useRouter } from 'next/navigation';
 import styles from "./page.module.css";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useGetPokemonByNameQuery } from "@/redux/api";
+import { useRegisterUserMutation } from "@/redux/userApi";
 
 
 
-interface IFormInput {
-  firstName: string;
-  lastName: string;
+interface FormData {
+  name: string;
+  username: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -16,13 +19,29 @@ interface IFormInput {
 }
 
 export default function Register() {
-
-
-
-  const { register, handleSubmit } = useForm<IFormInput>();
-  const onSubmit = (data: IFormInput) => {
-    alert(JSON.stringify(data));
+  const { register, handleSubmit } = useForm<FormData>();
+  const [registerUser] = useRegisterUserMutation();
+  const router = useRouter();
+  const onSubmit = async (data: FormData) => {
+    try {
+      const newUser = await registerUser(data).unwrap();
+      localStorage.setItem('registered', 'true');
+      const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+      const updatedUsers = [...existingUsers, newUser];
+      localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
+      router.push('/dashboard');
+    } catch (error) {
+      console.error('Registration error:', error);
+    }
   };
+
+  useLayoutEffect(() => {
+    const registered = localStorage.getItem('registered');
+    // If user is already registered, redirect them to the dashboard
+    if (registered === 'true') {
+      router.push('/dashboard');
+    }
+  }, [router]);
 
   return (
     <div className={styles.page}>
@@ -35,18 +54,18 @@ export default function Register() {
             </label>
             <input
               placeholder="first name"
-              {...register("firstName")}
+              {...register("name")}
               className={styles.input}
             />
           </div>
 
           <div>
             <label htmlFor="lastName" className={styles.label}>
-              Last Name
+            username
             </label>
             <input
               placeholder="last name"
-              {...register("lastName")}
+              {...register("username")}
               className={styles.input}
             />
           </div>
@@ -88,7 +107,7 @@ export default function Register() {
         </form>
       </main>
       <footer className={styles.footer}>
-        &copy; 2024 Your Company. All rights reserved.
+        &copy; 2024 Satyam Kushwaha. All rights reserved.
       </footer>
     </div>
   );
