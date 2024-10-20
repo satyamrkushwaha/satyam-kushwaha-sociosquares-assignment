@@ -18,7 +18,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Grid from "@mui/material/Grid2";
 import Skeleton from "@mui/material/Skeleton";
-import ReactLazy, { Suspense } from "react";
+import { Suspense } from "react";
 
 // Lazy load the Card component
 const OutlinedCard = React.lazy(() => import("@/components/Card"));
