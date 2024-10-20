@@ -19,7 +19,7 @@
   }
   
   .form {
-    max-width: 400px;
+    max-width: 450px;
     margin: 0 auto;
   }
   
@@ -95,5 +95,10 @@
     color: white;
     font-size: 14px;
     border-top: 1px solid rgb(79, 98, 148);
+  }
+
+  .error{
+    color: red;
+    font-size: 12px;
   }
   

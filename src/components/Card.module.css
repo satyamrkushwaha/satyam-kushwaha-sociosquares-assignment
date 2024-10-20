@@ -1,0 +1,18 @@
+.card {
+    box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.05),
+        inset -5px -5px 5px rgba(255, 255, 255, 0.5) 5px 5px 5px rgba(0, 0, 0, 0.05) -5px -5px 5px rgba(255, 255, 255, 0.5);
+}
+
+.card .box {
+    background:rgba(0, 0, 0, 0.04);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    height: 250px;
+}
+
+
+
+.card .box .content {
+    padding: 20px;
+    text-align: left;
+}

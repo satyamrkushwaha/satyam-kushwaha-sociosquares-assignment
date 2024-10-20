@@ -19,7 +19,7 @@
 }
 
 .form {
-  max-width: 400px;
+  max-width: 450px;
   margin: 0 auto;
 }
 
@@ -86,6 +86,13 @@
 }
 .error{
   color: red;
+  font-size: 12px;
+}
+
+.instruction{
+  color: rgb(212, 212, 212);
+  font-size: 12px;
+  font-style: italic;
 }
 
 .footer {

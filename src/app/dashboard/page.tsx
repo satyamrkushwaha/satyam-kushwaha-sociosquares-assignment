@@ -17,6 +17,16 @@ import Button from '@mui/material/Button';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import OutlinedCard from '@/components/Card';
+import Grid from '@mui/material/Grid2';
+
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: number;
+    value: number;
+}
 
 export default function Dashboard() {
 
@@ -28,10 +38,17 @@ export default function Dashboard() {
 
     const registeredUsers = useSelector((state: RootState) => state.user.users);
 
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    };
+
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
             backgroundColor: theme.palette.common.black,
             color: theme.palette.common.white,
+            fontSize: 16,
         },
         [`&.${tableCellClasses.body}`]: {
             fontSize: 14,
@@ -52,6 +69,29 @@ export default function Dashboard() {
         router.push('/login');
     }
 
+    function CustomTabPanel(props: TabPanelProps) {
+        const { children, value, index, ...other } = props;
+
+        return (
+            <div
+                role="tabpanel"
+                hidden={value !== index}
+                id={`simple-tabpanel-${index}`}
+                aria-labelledby={`simple-tab-${index}`}
+                {...other}
+            >
+                {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+            </div>
+        );
+    }
+
+    function a11yProps(index: number) {
+        return {
+            id: `simple-tab-${index}`,
+            'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
+
     useEffect(() => {
         const registered = sessionStorage.getItem('registered');
         if (!registered) {
@@ -69,40 +109,65 @@ export default function Dashboard() {
 
     return (< Box className={styles.dashboardContainer}>
         <Box className={styles.logoutBtnBox}>
+            <h1>User Dashboard</h1>
             <Button className={styles.logoutBtn} size="medium" variant="contained" color="error" onClick={handleLogout}>Logout <LogoutIcon fontSize="small" /></Button>
         </Box>
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow className={styles.tableHead}>
-                        <StyledTableCell>User No.</StyledTableCell>
-                        <StyledTableCell>Name</StyledTableCell>
-                        <StyledTableCell align="right">Username</StyledTableCell>
-                        <StyledTableCell align="right">Email</StyledTableCell>
-                        <StyledTableCell align="right">Company</StyledTableCell>
-                        <StyledTableCell align="right">Website</StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {allUsers.map((user, index) => (
-                        <StyledTableRow
-                            key={user?.id}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <StyledTableCell component="th" scope="row">
-                                {index + 1 || 'NA'}
-                            </StyledTableCell>
-                            <StyledTableCell component="th" scope="row">
-                                {user?.name || 'NA'}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">{user?.username || 'NA'}</StyledTableCell>
-                            <StyledTableCell align="right">{user?.email || 'NA'}</StyledTableCell>
-                            <StyledTableCell align="right">{user?.company?.name || 'NA'}</StyledTableCell>
-                            <StyledTableCell align="right">{user?.website || 'NA'}</StyledTableCell>
-                        </StyledTableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+
+
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                <Tab label="List View" {...a11yProps(0)} />
+                <Tab label="Grid View" {...a11yProps(1)} />
+            </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+            <TableContainer component={Paper}>
+                <Table aria-label="simple table">
+                    <TableHead>
+                        <TableRow className={styles.tableHead}>
+                            <StyledTableCell>User No.</StyledTableCell>
+                            <StyledTableCell>Name</StyledTableCell>
+                            <StyledTableCell align="right">Username</StyledTableCell>
+                            <StyledTableCell align="right">Email</StyledTableCell>
+                            <StyledTableCell align="right">Company</StyledTableCell>
+                            <StyledTableCell align="right">Website</StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {allUsers.map((user, index) => (
+                            <StyledTableRow
+                                key={user?.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                                <StyledTableCell component="th" scope="row">
+                                    {index + 1 || 'NA'}
+                                </StyledTableCell>
+                                <StyledTableCell component="th" scope="row">
+                                    {user?.name || 'NA'}
+                                </StyledTableCell>
+                                <StyledTableCell align="right">{user?.username || 'NA'}</StyledTableCell>
+                                <StyledTableCell align="right">{user?.email || 'NA'}</StyledTableCell>
+                                <StyledTableCell align="right">{user?.company?.name || 'NA'}</StyledTableCell>
+                                <StyledTableCell align="right">{user?.website || 'NA'}</StyledTableCell>
+                            </StyledTableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+            <Grid container spacing={2}>
+                {allUsers.map((user, index) => (
+                    <OutlinedCard
+                        key={user?.id}
+                        name={user?.name || 'NA'}
+                        username={user?.username || 'NA'}
+                        email={user?.email || 'NA'}
+                        company={user?.company?.name || 'NA'}
+                        website={user?.website || 'NA'}
+                    />
+                ))}
+            </Grid>
+        </CustomTabPanel>
     </ Box>)
 }

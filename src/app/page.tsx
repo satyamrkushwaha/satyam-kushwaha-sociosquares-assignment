@@ -28,7 +28,7 @@ export default function Register() {
   const onSubmit = async (data: FormData) => {
     try {
       const newUser = await registerUser(data).unwrap();
-      alert('Registration successful');
+      alert('Registration successful, Please login to continue');
       sessionStorage.setItem('registered', 'true');
       dispatch(addUser(newUser));
       const existingUsers = JSON.parse(sessionStorage.getItem('registeredUsers') || '[]');
@@ -42,10 +42,10 @@ export default function Register() {
 
 
   useEffect(() => {
-      const timer = setTimeout(() => {
-        clearErrors();
-      }, 3000);
-      return () => clearTimeout(timer);
+    const timer = setTimeout(() => {
+      clearErrors();
+    }, 3000);
+    return () => clearTimeout(timer);
   }, [errors]);
 
   return (
@@ -70,7 +70,7 @@ export default function Register() {
               Username
             </label>
             <input
-    
+
               placeholder="Username"
               {...register("username", { required: 'Username is required' })}
               className={styles.input}
@@ -82,7 +82,7 @@ export default function Register() {
               Email
             </label>
             <input
-     
+
               placeholder="example@example.com"
               type="email"
               {...register("email", { required: 'Email is required' })}
@@ -95,7 +95,7 @@ export default function Register() {
               Password
             </label>
             <input
-  
+
               placeholder="********"
               type="password"
               {...register("password", {
@@ -111,16 +111,17 @@ export default function Register() {
               })}
               className={styles.input}
             />
-    
-              <p className={styles.error}>{errors?.password?.message}</p>
-     
+
+            <p className={styles.error}>{errors?.password?.message}</p>
+            <p className={styles.instruction}>(Password must include uppercase, lowercase, number, and special character)</p>
+
           </div>
           <div>
             <label htmlFor="confirmPassword" className={styles.label}>
               Confirm Password
             </label>
             <input
- 
+
               placeholder="********"
               type="password"
               {...register("confirmPassword", {
@@ -130,9 +131,9 @@ export default function Register() {
               })}
               className={styles.input}
             />
-   
-              <p className={styles.error}>{errors?.confirmPassword?.message}</p>
-     
+
+            <p className={styles.error}>{errors?.confirmPassword?.message}</p>
+
           </div>
           <div className={styles.buttonContainer}>
             <button type="submit" className={styles.submitButton}> Register </button>
@@ -142,9 +143,7 @@ export default function Register() {
           </div>
         </form>
       </main>
-      <footer className={styles.footer}>
-        &copy; 2024 Satyam Kushwaha. All rights reserved.
-      </footer>
+
     </div>
   );
 }

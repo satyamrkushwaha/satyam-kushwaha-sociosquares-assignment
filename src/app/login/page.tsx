@@ -47,14 +47,11 @@ export default function Login() {
         router.push('/');
     }
     useEffect(() => {
-        if (Object.keys(errors).length > 0) {
-          const timer = setTimeout(() => {
-            clearErrors();
-          }, 3000);
-    
-          return () => clearTimeout(timer);  // Cleanup timer when component unmounts or errors change
-        }
-      }, [errors, clearErrors]);
+        const timer = setTimeout(() => {
+          clearErrors();
+        }, 3000);
+        return () => clearTimeout(timer);
+    }, [errors]);
 
     return (
         <div className={styles.page}>
@@ -66,7 +63,6 @@ export default function Login() {
                             Username
                         </label>
                         <input
-          
                             type="text"
                             placeholder="Username"
                             {...register("username", { required: 'Username is required' })}
@@ -79,7 +75,6 @@ export default function Login() {
                             Email
                         </label>
                         <input
-               
                             placeholder="example@example.com"
                             type="email"
                             {...register("email", { required: 'Email is required' })}
@@ -92,7 +87,6 @@ export default function Login() {
                             Password
                         </label>
                         <input
-
                             placeholder="********"
                             type="password"
                             {...register("password", { required: 'Password is required' })}
@@ -106,9 +100,6 @@ export default function Login() {
                     </div>
                 </form>
             </main>
-            <footer className={styles.footer}>
-                &copy; 2024 Your Company. All rights reserved.
-            </footer>
         </div>
     );
 }
