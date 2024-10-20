@@ -1,7 +1,4 @@
 import type { Metadata } from "next";
-
-
-
 export const metadata: Metadata = {
   title: "login",
   description: "login from here",

@@ -15,6 +15,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { RootState } from '@/redux/store';
+import { useSelector } from 'react-redux';
 
 export default function Dashboard() {
 
@@ -23,6 +25,8 @@ export default function Dashboard() {
     const router = useRouter();
 
     const [allUsers, setAllUsers] = useState<any[]>([]);
+
+    const registeredUsers = useSelector((state: RootState) => state.user.users);
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
@@ -44,13 +48,12 @@ export default function Dashboard() {
         },
     }));
 
-    const handleSingout = () => {
-        localStorage.clear();
+    const handleLogout = () => {
         router.push('/login');
     }
 
     useEffect(() => {
-        const registered = localStorage.getItem('registered');
+        const registered = sessionStorage.getItem('registered');
         if (!registered) {
             router.push('/');
         }
@@ -59,15 +62,15 @@ export default function Dashboard() {
 
     useEffect(() => {
         if (apiUsers) {
-            const localUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-            setAllUsers([...localUsers, ...apiUsers]);
+            setAllUsers([...apiUsers]);
         }
     }, [apiUsers]);
 
 
     return (<>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-            <Button className={styles.logoutBtn} size="medium" onClick={handleSingout}>Logout <LogoutIcon /></Button>
+            <Button className={styles.logoutBtn} size="medium" onClick={handleLogout}>Logout <LogoutIcon /></Button>
+
         </Box>
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
