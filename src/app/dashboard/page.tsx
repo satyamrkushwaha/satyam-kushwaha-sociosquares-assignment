@@ -18,6 +18,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import OutlinedCard from '@/components/Card';
 import Grid from '@mui/material/Grid2';
+import Skeleton from '@mui/material/Skeleton';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -38,7 +39,7 @@ interface User {
 
 export default function Dashboard() {
 
-    const { data: apiUsers} = useFetchUsersQuery('');
+    const { data: apiUsers, isLoading } = useFetchUsersQuery('');
 
     const router = useRouter();
 
@@ -127,6 +128,7 @@ export default function Dashboard() {
             </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
+        { isLoading ?  <Skeleton animation="wave" variant="rectangular" width={'100%'} height={600} /> : (
             <TableContainer component={Paper}>
                 <Table aria-label="simple table">
                     <TableHead>
@@ -141,25 +143,32 @@ export default function Dashboard() {
                     </TableHead>
                     <TableBody>
                         {allUsers.map((user, index) => (
-                            <StyledTableRow
-                                key={user?.id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <StyledTableCell component="th" scope="row">
-                                    {index + 1 || 'NA'}
-                                </StyledTableCell>
-                                <StyledTableCell component="th" scope="row">
-                                    {user?.name || 'NA'}
-                                </StyledTableCell>
-                                <StyledTableCell align="right">{user?.username || 'NA'}</StyledTableCell>
-                                <StyledTableCell align="right">{user?.email || 'NA'}</StyledTableCell>
-                                <StyledTableCell align="right">{user?.company?.name || 'NA'}</StyledTableCell>
-                                <StyledTableCell align="right">{user?.website || 'NA'}</StyledTableCell>
-                            </StyledTableRow>
-                        ))}
+
+                             (
+                                <StyledTableRow
+                                    key={user?.id}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <StyledTableCell component="th" scope="row">
+                                        {index + 1 || 'NA'}
+                                    </StyledTableCell>
+                                    <StyledTableCell component="th" scope="row">
+                                        {user?.name || 'NA'}
+                                    </StyledTableCell>
+                                    <StyledTableCell align="right">{user?.username || 'NA'}</StyledTableCell>
+                                    <StyledTableCell align="right">{user?.email || 'NA'}</StyledTableCell>
+                                    <StyledTableCell align="right">{user?.company?.name || 'NA'}</StyledTableCell>
+                                    <StyledTableCell align="right">{user?.website || 'NA'}</StyledTableCell>
+                                </StyledTableRow>
+                            )
+
+                        ))
+                        }
                     </TableBody>
+                   
                 </Table>
             </TableContainer>
+        )}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
             <Grid container spacing={2}>
