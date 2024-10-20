@@ -17,7 +17,7 @@ interface FormData {
 }
 
 export default function Register() {
-  const { register, handleSubmit, watch, formState: { errors }, clearErrors } = useForm<FormData>();
+  const { register, handleSubmit, watch, formState: { errors }, clearErrors, setError } = useForm<FormData>();
   const [registerUser] = useRegisterUserMutation();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -26,20 +26,34 @@ export default function Register() {
   const password = watch('password');
 
   const onSubmit = async (data: FormData) => {
+    const existingUsers = JSON.parse(sessionStorage.getItem('registeredUsers') || '[]');
+    
+    // Check if the email or username already exists
+    const userExists = existingUsers.some(
+      (user: FormData) => user.email === data.email || user.username === data.username
+    );
+    
+    if (userExists) {
+      setError("email", { type: "manual", message: "User with this email already exists" });
+      setError("username", { type: "manual", message: "User with this username already exists" });
+      return; // Stop the registration process if user exists
+    }
+
     try {
       const newUser = await registerUser(data).unwrap();
       alert('Registration successful, Please login to continue');
   
       dispatch(addUser(newUser));
-      const existingUsers = JSON.parse(sessionStorage.getItem('registeredUsers') || '[]');
+
+      // Add the new user to the session storage
       const updatedUsers = [...existingUsers, newUser];
       sessionStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
+
       router.push('/login');
     } catch (error) {
       console.error('Registration error:', error);
     }
   };
-
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -73,7 +87,7 @@ export default function Register() {
               {...register("username", { required: 'Username is required' })}
               className={styles.input}
             />
-            {errors.name && <p className={styles.error}>{errors?.username?.message}</p>}
+            {errors.username && <p className={styles.error}>{errors?.username?.message}</p>}
           </div>
           <div>
             <label htmlFor="email" className={styles.label}>
@@ -85,7 +99,7 @@ export default function Register() {
               {...register("email", { required: 'Email is required' })}
               className={styles.input}
             />
-            {errors.name && <p className={styles.error}>{errors?.email?.message}</p>}
+            {errors.email && <p className={styles.error}>{errors?.email?.message}</p>}
           </div>
           <div>
             <label htmlFor="password" className={styles.label}>
@@ -115,7 +129,6 @@ export default function Register() {
               Confirm Password
             </label>
             <input
-
               placeholder="********"
               type="password"
               {...register("confirmPassword", {
@@ -135,7 +148,6 @@ export default function Register() {
           </div>
         </form>
       </main>
-
     </div>
   );
 }
