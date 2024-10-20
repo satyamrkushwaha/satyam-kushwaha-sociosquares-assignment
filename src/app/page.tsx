@@ -29,7 +29,7 @@ export default function Register() {
     try {
       const newUser = await registerUser(data).unwrap();
       alert('Registration successful, Please login to continue');
-      sessionStorage.setItem('registered', 'true');
+  
       dispatch(addUser(newUser));
       const existingUsers = JSON.parse(sessionStorage.getItem('registeredUsers') || '[]');
       const updatedUsers = [...existingUsers, newUser];

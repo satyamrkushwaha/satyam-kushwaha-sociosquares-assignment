@@ -74,6 +74,7 @@ export default function Dashboard() {
 
     const handleLogout = () => {
         router.push('/login');
+        sessionStorage.setItem('registered' , 'false');
     }
 
     function CustomTabPanel(props: TabPanelProps) {
@@ -101,9 +102,13 @@ export default function Dashboard() {
 
     useEffect(() => {
         const registered = sessionStorage.getItem('registered');
-        if (!registered) {
+        if (registered === 'false') {
             router.push('/');
+        } else if (registered === 'true') {
+            router.push('/dashboard');
         }
+
+        console.log(registered)
     }, [router]);
 
 
