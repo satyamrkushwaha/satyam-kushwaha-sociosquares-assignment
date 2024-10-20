@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from 'next/navigation';
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useEffect } from 'react';
 import styles from "./page.module.css";
 import { useForm, SubmitHandler } from "react-hook-form";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -14,7 +14,7 @@ interface IFormInput {
 
 export default function Login() {
     const router = useRouter();
-    const { register, handleSubmit } = useForm<IFormInput>();
+    const { register, handleSubmit, formState: { errors } , clearErrors } = useForm<IFormInput>();
     const registeredUsers = useSelector((state: RootState) => state.user.users);
  
 
@@ -46,6 +46,15 @@ export default function Login() {
         // sessionStorage.clear();
         router.push('/');
     }
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+          const timer = setTimeout(() => {
+            clearErrors();
+          }, 3000);
+    
+          return () => clearTimeout(timer);  // Cleanup timer when component unmounts or errors change
+        }
+      }, [errors, clearErrors]);
 
     return (
         <div className={styles.page}>
@@ -57,32 +66,39 @@ export default function Login() {
                             Username
                         </label>
                         <input
+          
+                            type="text"
                             placeholder="Username"
-                            {...register("username", { required: true })}
+                            {...register("username", { required: 'Username is required' })}
                             className={styles.input}
                         />
+                        <p className={styles.error}>{errors?.username?.message}</p>
                     </div>
                     <div>
                         <label htmlFor="email" className={styles.label}>
                             Email
                         </label>
                         <input
+               
                             placeholder="example@example.com"
                             type="email"
-                            {...register("email", { required: true })}
+                            {...register("email", { required: 'Email is required' })}
                             className={styles.input}
                         />
+                         <p className={styles.error}>{errors?.email?.message}</p>
                     </div>
                     <div>
                         <label htmlFor="password" className={styles.label}>
                             Password
                         </label>
                         <input
+
                             placeholder="********"
                             type="password"
-                            {...register("password", { required: true })}
+                            {...register("password", { required: 'Password is required' })}
                             className={styles.input}
                         />
+                         <p className={styles.error}>{errors?.password?.message}</p>
                     </div>
                     <div className={styles.buttonContainer}>
                         <button type="submit" className={styles.submitButton}> Login </button>

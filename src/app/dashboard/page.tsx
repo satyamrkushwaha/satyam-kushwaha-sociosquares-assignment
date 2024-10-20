@@ -67,10 +67,9 @@ export default function Dashboard() {
     }, [apiUsers]);
 
 
-    return (<>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-            <Button className={styles.logoutBtn} size="medium" onClick={handleLogout}>Logout <LogoutIcon /></Button>
-
+    return (< Box className={styles.dashboardContainer}>
+        <Box className={styles.logoutBtnBox}>
+            <Button className={styles.logoutBtn} size="medium" variant="contained" color="error" onClick={handleLogout}>Logout <LogoutIcon fontSize="small" /></Button>
         </Box>
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -105,5 +104,5 @@ export default function Dashboard() {
                 </TableBody>
             </Table>
         </TableContainer>
-    </>)
+    </ Box>)
 }

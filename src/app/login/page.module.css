@@ -64,12 +64,7 @@
     background: #bf1650;
   }
   
-  .submitButton:active {
-    transition: 0.3s all;
-    transform: translateY(3px);
-    border: 1px solid transparent;
-    opacity: 0.8;
-  }
+
   
   .submitButton:disabled {
     opacity: 0.4;
