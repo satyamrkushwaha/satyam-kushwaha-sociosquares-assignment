@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from 'next/navigation';
-import { useLayoutEffect, useEffect } from 'react';
+import { useEffect } from 'react';
 import styles from "./page.module.css";
 import { useForm, SubmitHandler } from "react-hook-form";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -26,7 +26,7 @@ export default function Login() {
         const authUser = (registeredUsers && registeredUsers.length > 0) ? registeredUsers : registeredUsersDetails;
         
         // Check if the user exists in the registered users
-        const userExists = authUser.some((user: any) =>
+        const userExists = authUser.some((user: IFormInput) =>
             user.username === data.username &&
             user.email === data.email &&
             user.password === data.password

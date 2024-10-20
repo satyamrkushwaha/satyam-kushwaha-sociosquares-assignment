@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import styles from './page.module.css'
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import { Typography, CircularProgress } from '@mui/material';
 import { useFetchUsersQuery } from '@/redux/userApi'
 import { useRouter } from 'next/navigation';
 import Table from '@mui/material/Table';
@@ -15,8 +14,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { RootState } from '@/redux/store';
-import { useSelector } from 'react-redux';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import OutlinedCard from '@/components/Card';
@@ -28,15 +25,24 @@ interface TabPanelProps {
     value: number;
 }
 
+interface User {
+    id: number;
+    name: string;
+    username: string;
+    email: string;
+    company: {
+        name: string;
+    };
+    website: string;
+}
+
 export default function Dashboard() {
 
-    const { data: apiUsers, isLoading } = useFetchUsersQuery('');
+    const { data: apiUsers} = useFetchUsersQuery('');
 
     const router = useRouter();
 
-    const [allUsers, setAllUsers] = useState<any[]>([]);
-
-    const registeredUsers = useSelector((state: RootState) => state.user.users);
+    const [allUsers, setAllUsers] = useState<User[]>([]);
 
     const [value, setValue] = useState(0);
 
@@ -157,7 +163,7 @@ export default function Dashboard() {
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
             <Grid container spacing={2}>
-                {allUsers.map((user, index) => (
+                {allUsers.map((user) => (
                     <OutlinedCard
                         key={user?.id}
                         name={user?.name || 'NA'}
