@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./common.css";
 import ReduxProvider from "@/redux/provider";
 
 

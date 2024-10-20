@@ -51,31 +51,20 @@
     color: white;
     text-transform: uppercase;
     border: none;
-    /* margin-top: 40px; */
     padding: 15px 20px;
+    border-radius: 0.5rem;
     font-size: 16px;
     font-weight: 100;
     letter-spacing: 10px;
-    border-radius: 0.5rem;
     cursor: pointer;
   }
   
-  .submitButton:hover {
-    background: #bf1650;
-  }
-  
-
-  
-  .submitButton:disabled {
-    opacity: 0.4;
-  }
-
   .buttonContainer{
     display: flex;
     align-items: center;
     padding-top: 1rem;
   }
-
+  
   .register{
     text-align: center;
     color: white;
@@ -88,15 +77,23 @@
     gap: 0.5rem;
   }
   
-  .footer {
-    margin-top: auto;
-    text-align: center;
-    padding: 10px;
-    color: white;
-    font-size: 14px;
-    border-top: 1px solid rgb(79, 98, 148);
+  .submitButton:hover {
+    background: #bf1650;
   }
-
+  
+  .submitButton:disabled {
+    opacity: 0.4;
+  }
+  
+  
+  .instruction{
+    color: rgb(212, 212, 212);
+    font-size: 12px;
+    font-style: italic;
+  }
+  
+  
+  
   .error{
     color: red;
     font-size: 12px;

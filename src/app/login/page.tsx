@@ -1,11 +1,12 @@
 "use client";
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import styles from "./page.module.css";
+import { useEffect, useCallback } from 'react';
 import { useForm, SubmitHandler } from "react-hook-form";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+
+// Interface for form inputs
 interface IFormInput {
     username: string;
     email: string;
@@ -13,92 +14,93 @@ interface IFormInput {
 }
 
 export default function Login() {
-
     const router = useRouter();
-
-    const { register, handleSubmit, formState: { errors } , clearErrors } = useForm<IFormInput>();
-
-    const registeredUsers = useSelector((state: RootState) => state.user.users);
- 
-    const onSubmit: SubmitHandler<IFormInput> = (data) => {
-        // Get registered users from sessionStorage
-        const registeredUsersDetails = JSON.parse(sessionStorage.getItem('registeredUsers') || '[]');
+    const { register, handleSubmit, formState: { errors }, clearErrors } = useForm<IFormInput>();
     
-        // Check if 'registeredUsers' exists, otherwise fallback to 'registeredUsersDetails'
-        const authUser = (registeredUsers && registeredUsers.length > 0) ? registeredUsers : registeredUsersDetails;
-        
+    // Get registered users from Redux store
+    const registeredUsers = useSelector((state: RootState) => state.user.users);
+    
+    // Handle form submission
+    const onSubmit: SubmitHandler<IFormInput> = useCallback((data) => {
+        // Fallback to sessionStorage if no Redux users available
+        const registeredUsersDetails = JSON.parse(sessionStorage.getItem('registeredUsers') || '[]');
+        const authUsers = registeredUsers?.length ? registeredUsers : registeredUsersDetails;
+
         // Check if the user exists in the registered users
-        const userExists = authUser.some((user: IFormInput) =>
+        const userExists = authUsers.some((user: IFormInput) =>
             user.username === data.username &&
             user.email === data.email &&
             user.password === data.password
         );
 
         if (userExists) {
-            // Redirect to the Dashboard if user is found
+            // Set sessionStorage and redirect to the dashboard
             sessionStorage.setItem('registered', 'true');
             router.push('/dashboard');
         } else {
             alert("Invalid credentials. Please try again.");
         }
-    };
-    
+    }, [registeredUsers, router]);
 
-    const handleRegister = () => {
+    // Redirect to registration page
+    const handleRegister = useCallback(() => {
         router.push('/');
-    }
-    
+    }, [router]);
+
+    // Auto clear form errors after 3 seconds
     useEffect(() => {
         const timer = setTimeout(() => {
-          clearErrors();
+            clearErrors();
         }, 3000);
         return () => clearTimeout(timer);
-    }, [errors]);
+    }, [errors, clearErrors]);
 
     return (
-        <div className={styles.page}>
-            <main className={styles.main}>
-                <h1 className={styles.title}>Please Login</h1>
-                <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <div className='page'>
+            <main className='main'>
+                <h1 className='title'>Please Login</h1>
+                <form onSubmit={handleSubmit(onSubmit)} className='form'>
                     <div>
-                        <label htmlFor="username" className={styles.label}>
+                        <label htmlFor="username" className='label'>
                             Username
                         </label>
                         <input
                             type="text"
                             placeholder="Username"
                             {...register("username", { required: 'Username is required' })}
-                            className={styles.input}
+                            className='input'
                         />
-                        <p className={styles.error}>{errors?.username?.message}</p>
+                        <p className='error'>{errors?.username?.message}</p>
                     </div>
                     <div>
-                        <label htmlFor="email" className={styles.label}>
+                        <label htmlFor="email" className='label'>
                             Email
                         </label>
                         <input
-                            placeholder="example@example.com"
                             type="email"
+                            placeholder="example@example.com"
                             {...register("email", { required: 'Email is required' })}
-                            className={styles.input}
+                            className='input'
                         />
-                         <p className={styles.error}>{errors?.email?.message}</p>
+                        <p className='error'>{errors?.email?.message}</p>
                     </div>
                     <div>
-                        <label htmlFor="password" className={styles.label}>
+                        <label htmlFor="password" className='label'>
                             Password
                         </label>
                         <input
-                            placeholder="********"
                             type="password"
+                            placeholder="********"
                             {...register("password", { required: 'Password is required' })}
-                            className={styles.input}
+                            className='input'
                         />
-                         <p className={styles.error}>{errors?.password?.message}</p>
+                        <p className='error'>{errors?.password?.message}</p>
                     </div>
-                    <div className={styles.buttonContainer}>
-                        <button type="submit" className={styles.submitButton}> Login </button>
-                        <span className={styles.register} onClick={handleRegister}>Register New Users <ArrowForwardIcon /></span>
+                    <div className='buttonContainer'>
+                        <button type="submit" className='submitButton'> Login </button>
+                        <span className='register' onClick={handleRegister}>
+                            Register New Users <ArrowForwardIcon />
+                        </span>
                     </div>
                 </form>
             </main>
