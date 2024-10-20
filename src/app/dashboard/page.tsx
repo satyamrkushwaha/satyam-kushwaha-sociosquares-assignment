@@ -124,8 +124,6 @@ export default function Dashboard() {
             <h1>User Dashboard</h1>
             <Button className={styles.logoutBtn} size="medium" variant="contained" color="error" onClick={handleLogout}>Logout <LogoutIcon fontSize="small" /></Button>
         </Box>
-
-
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                 <Tab label="List View" {...a11yProps(0)} />

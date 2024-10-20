@@ -13,11 +13,13 @@ interface IFormInput {
 }
 
 export default function Login() {
+
     const router = useRouter();
+
     const { register, handleSubmit, formState: { errors } , clearErrors } = useForm<IFormInput>();
+
     const registeredUsers = useSelector((state: RootState) => state.user.users);
  
-
     const onSubmit: SubmitHandler<IFormInput> = (data) => {
         // Get registered users from sessionStorage
         const registeredUsersDetails = JSON.parse(sessionStorage.getItem('registeredUsers') || '[]');
@@ -43,9 +45,9 @@ export default function Login() {
     
 
     const handleRegister = () => {
-        // sessionStorage.clear();
         router.push('/');
     }
+    
     useEffect(() => {
         const timer = setTimeout(() => {
           clearErrors();

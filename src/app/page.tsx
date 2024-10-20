@@ -58,7 +58,6 @@ export default function Register() {
               Full Name
             </label>
             <input
-
               placeholder="Full name"
               {...register("name", { required: 'Name is required' })}
               className={styles.input}
@@ -70,7 +69,6 @@ export default function Register() {
               Username
             </label>
             <input
-
               placeholder="Username"
               {...register("username", { required: 'Username is required' })}
               className={styles.input}
@@ -82,7 +80,6 @@ export default function Register() {
               Email
             </label>
             <input
-
               placeholder="example@example.com"
               type="email"
               {...register("email", { required: 'Email is required' })}
@@ -95,7 +92,6 @@ export default function Register() {
               Password
             </label>
             <input
-
               placeholder="********"
               type="password"
               {...register("password", {
@@ -111,10 +107,8 @@ export default function Register() {
               })}
               className={styles.input}
             />
-
             <p className={styles.error}>{errors?.password?.message}</p>
             <p className={styles.instruction}>(Password must include uppercase, lowercase, number, and special character)</p>
-
           </div>
           <div>
             <label htmlFor="confirmPassword" className={styles.label}>
@@ -131,9 +125,7 @@ export default function Register() {
               })}
               className={styles.input}
             />
-
             <p className={styles.error}>{errors?.confirmPassword?.message}</p>
-
           </div>
           <div className={styles.buttonContainer}>
             <button type="submit" className={styles.submitButton}> Register </button>
